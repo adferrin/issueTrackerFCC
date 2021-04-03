@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const IssueModel = require("../models").Issue;
 const ProjectModel = require("../models").Project;
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = function (app) {
 
@@ -125,7 +126,7 @@ module.exports = function (app) {
         !status_text &&
         !open
       ) {
-        res.json({ error: "no update fields(s) sent", _id: _id });
+        res.json({ error: "no update field(s) sent", _id: _id });
         return;
       }
       ProjectModel.findOne({ name: project }, (err, projectdata) => {
@@ -157,7 +158,31 @@ module.exports = function (app) {
     
     .delete(function (req, res){
       let project = req.params.project;
-      
+      const { _id} = req.body;
+      if (!_id) {
+        res.json({ error: "missing _id" });
+        return;
+      }
+      ProjectModel.findOne({ name: project }, (err, projectdata) => {
+        if (!projectdata || err) {
+          res.send ({ error: "could not delete", _id: _id });
+        } else {
+          const issueData = projectdata.issues.id(_id);
+          if (!issueData) {
+            res.send({ error: "could not delete", _id: _id});
+            return;
+          }
+          issueData.remove();
+
+          projectdata.save((err, data) => {
+            if (err || !data) {
+              res.json({ error: "could not delette", _id: issueData._id });
+            } else {
+              res.json({ result: "successfully deleted", _id: issueData._id });
+            }
+          });
+        }
+      });
     });
     
 };
