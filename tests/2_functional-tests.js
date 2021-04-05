@@ -91,6 +91,43 @@ suite("Functional Tests", function() {
 
         // Get request tests //
 
-        
+        suite("3 Get request Tests", function () {
+            test("View issies on a project: GET request to /api/issues/{project}", function (done) {
+                chai
+                .request(server)
+                .get("/api/issues/test-data-abc123")
+                .end(function (err, res) {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.length, 4);
+                    done();
+                });
+            });
+            test("View issues on a project with one filter: GET request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .get("/api/issues/test-data-abc123")
+                    .query({
+                        _id: "fill me in",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.deepEqual(res.body[0], {
+                            _id: "fill me in",
+                            issue_title: "Hey",
+                            issue_text: "some text",
+                            created_on: "copy over",
+                            updated_on: "copy over",
+                            created_by: "Austin",
+                            assigned_to: "",
+                            opend: true,
+                            status_text: "",
+                        });
+                        done();
+                    });
+                });
+            test("View issues on a project with multiple filters: GET request to /api/issues/{project}", function (done) {
+                chai
+            })
+        })
   })
 });
