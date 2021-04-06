@@ -106,20 +106,20 @@ suite("Functional Tests", function() {
                     .request(server)
                     .get("/api/issues/test-data-abc123")
                     .query({
-                        _id: "fill me in",
+                        _id: "606cd39a9e3e784d64114a78",
                     })
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
                         assert.deepEqual(res.body[0], {
-                            _id: "fill me in",
+                            _id: "606cd39a9e3e784d64114a78",
                             issue_title: "Hey",
-                            issue_text: "some text",
-                            created_on: "copy over",
-                            updated_on: "copy over",
-                            created_by: "Austin",
+                            issue_text: "Hello World",
+                            created_on: "2021-04-06T21:33:14.607Z",
+                            updated_on: "2021-04-06T21:33:14.607Z",
+                            created_by: "Austin ",
                             assigned_to: "",
-                            opend: true,
-                            status_text: "",
+                            open: true,
+                            status_text: ""
                         });
                         done();
                     });
@@ -129,21 +129,21 @@ suite("Functional Tests", function() {
                     .request(server)
                     .get("/api/issues/test-data-abc123")
                     .query({
-                        issue_title: "hey",
-                        issue_title: "testing"
+                        issue_title: "Hey",
+                        issue_text: "Hello World",
                     })
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
                         assert.deepEqual(res.body[0], {
-                            _id: "fill me in",
+                            _id: "606cd39a9e3e784d64114a78",
                             issue_title: "Hey",
-                            issue_text: "some text",
-                            created_on: "copy over",
-                            updated_on: "copy over",
-                            created_by: "Austin",
+                            issue_text: "Hello World",
+                            created_on: "2021-04-06T21:33:14.607Z",
+                            updated_on: "2021-04-06T21:33:14.607Z",
+                            created_by: "Austin ",
                             assigned_to: "",
-                            opend: true,
-                            status_text: "",
+                            open: true,
+                            status_text: ""
                         });
                         done();
                     });
@@ -157,13 +157,13 @@ suite("Functional Tests", function() {
                     .request(server)
                     .put("/api/issues/test-data-put")
                     .send({
-                        _id: "fill me in",
-                        issue_title: "fill me in",
+                        _id: "606cd6848fc3484e22bb936b",
+                        issue_title: "different",
                     })
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
                         assert.equal(res.body.result, "successfully updated");
-                        assert.equal(res.body._id, "match to above issue");
+                        assert.equal(res.body._id, "606cd6848fc3484e22bb936b");
                         done();
                     });
             });
@@ -172,14 +172,14 @@ suite("Functional Tests", function() {
                     .request(server)
                     .put("/api/issues/test-data-put")
                     .send({
-                        _id: "fill me in",
-                        issue_title: "fill me in",
-                        issue_text: "fill me in"
+                        _id: "606cd6848fc3484e22bb936b",
+                        issue_title: "random",
+                        issue_text: "random"
                     })
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
                         assert.equal(res.body.result, "successfully updated");
-                        assert.equal(res.body._id, "match to above issue");
+                        assert.equal(res.body._id, "606cd6848fc3484e22bb936b");
                         done();
                     });
             });
@@ -202,7 +202,7 @@ suite("Functional Tests", function() {
                     .request(server)
                     .put("/api/issues/test-data-put")
                     .send({
-                        _id: "fill me in",
+                        _id: "606cd6848fc3484e22bb936b",
                     })
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
@@ -215,7 +215,7 @@ suite("Functional Tests", function() {
                     .request(server)
                     .put("/api/issues/test-data-put")
                     .send({
-                        _id: "fill me in",  
+                        _id: "606cd6849878fc3484e22bbsd936b",  
                         issue_title: "update",
                         issue_text: "update",
                     })
@@ -262,7 +262,7 @@ suite("Functional Tests", function() {
                     .send({})
                     .end(function (err, res) {
                         assert.equal(res.status, 200);
-                        assert.equal(rees.body.error, "missing _id");
+                        assert.equal(res.body.error, "missing _id");
                         done();
                     });
             });
