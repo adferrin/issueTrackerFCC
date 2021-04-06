@@ -225,7 +225,47 @@ suite("Functional Tests", function() {
                         done();
                     });
             });
-            ////// Delete request test//////
-        })
-  })
+        });
+        ////// Delete request test//////
+        
+        suite("3 DELETE request Tests", function () {
+            test("Delete an issue: DELETE request to /api/issues/{projects}", function (done) {
+                chai
+                .request(server)
+                .delete("/api/issues/projects")
+                .send({
+                    _id: deleteId,
+                })
+                .end(function (err, res) {
+                    assert.equal(res.status, 200);
+                    assert.equal(res.body.result, "successfully deleted");
+                    done();
+                });
+            });
+            test("Delete an issues with an invalid _id: DELETE request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .delete("/api/issues/projects")
+                    .send({
+                        _id: "fill me in",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.error, "could not delete");
+                        done();
+                    });
+            });
+            test("Delete an issue with missing _id: DELETE request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .delete("/api/issues/projects")
+                    .send({})
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(rees.body.error, "missing _id");
+                        done();
+                    });
+            });
+        });
+  });
 });
