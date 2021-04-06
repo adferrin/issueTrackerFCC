@@ -126,7 +126,106 @@ suite("Functional Tests", function() {
                 });
             test("View issues on a project with multiple filters: GET request to /api/issues/{project}", function (done) {
                 chai
-            })
+                    .request(server)
+                    .get("/api/issues/test-data-abc123")
+                    .query({
+                        issue_title: "hey",
+                        issue_title: "testing"
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.deepEqual(res.body[0], {
+                            _id: "fill me in",
+                            issue_title: "Hey",
+                            issue_text: "some text",
+                            created_on: "copy over",
+                            updated_on: "copy over",
+                            created_by: "Austin",
+                            assigned_to: "",
+                            opend: true,
+                            status_text: "",
+                        });
+                        done();
+                    });
+                });
+            });
+        ///// PUT request test /////
+
+        suite("5 PUT request tests", function () {
+            test("Update one field on an issue: PUT request to /api/issues/test-data-put", function (done) {
+                chai
+                    .request(server)
+                    .put("/api/issues/test-data-put")
+                    .send({
+                        _id: "fill me in",
+                        issue_title: "fill me in",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.result, "successfully updated");
+                        assert.equal(res.body._id, "match to above issue");
+                        done();
+                    });
+            });
+            test("Update multiple fields on an issue: PUT request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .put("/api/issues/test-data-put")
+                    .send({
+                        _id: "fill me in",
+                        issue_title: "fill me in",
+                        issue_text: "fill me in"
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.result, "successfully updated");
+                        assert.equal(res.body._id, "match to above issue");
+                        done();
+                    });
+            });
+            test("Update an issue with missing _id: PUT request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .put("/api/issues/test-data-put")
+                    .send({
+                        issue_title: "update",
+                        issue_text: "update",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.error, "missing _id");
+                        done();
+                    });
+            });
+            test("Update an issue with no fields to update: PUT request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .put("/api/issues/test-data-put")
+                    .send({
+                        _id: "fill me in",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.error, "no update field(s) sent");
+                        done();
+                    });
+            });
+            test("Update an issue with an invalid _id: PUT request to /api/issues/{project}", function (done) {
+                chai
+                    .request(server)
+                    .put("/api/issues/test-data-put")
+                    .send({
+                        _id: "fill me in",  
+                        issue_title: "update",
+                        issue_text: "update",
+                    })
+                    .end(function (err, res) {
+                        assert.equal(res.status, 200);
+                        assert.equal(res.body.error, "could not update");
+                        done();
+                    });
+            });
+            ////// Delete request test//////
         })
   })
 });
